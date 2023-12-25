@@ -8,6 +8,7 @@ app = FastAPI()
 def load():
     return FileResponse("index.html")
 
+
 @app.post("/")
 def read_root(text: str):
     return generate(text)

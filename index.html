@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat with AI</title>
+  <style>
+    /* Стили для чата */
+    .chat-box {
+      width: 300px;
+      height: 400px;
+      border: 1px solid #ccc;
+      overflow: auto;
+      padding: 10px;
+      margin: 20px;
+    }
+    .user-message {
+      background-color: #f0f0f0;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+      text-align: right;
+    }
+    .bot-message {
+      background-color: #e0e0e0;
+      margin-bottom: 10px;
+      padding: 8px;
+      border-radius: 5px;
+    }
+    input[type="text"] {
+      width: calc(100% - 20px);
+      padding: 5px;
+      margin-top: 10px;
+    }
+    button {
+      padding: 5px 10px;
+      margin-top: 10px;
+    }
+    /* Стили для контейнера */
+.container {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+}
+
+  </style>
+</head>
+<body>
+<div class="container">
+  <div class="chat-box" id="chatBox"></div>
+  <input type="text" id="userInput" placeholder="Type a message...">
+  <button onclick="sendMessage()">Send</button>
+</div>
+  <script>
+    function sendMessage() {
+      const userInput = document.getElementById('userInput').value;
+      const chatBox = document.getElementById('chatBox');
+
+      if (userInput.trim() !== '') {
+        // Показываем сообщение пользователя
+        chatBox.innerHTML += `<div class="user-message">${userInput}</div>`;
+
+        // Имитация запроса к ИИ (здесь может быть ваш код обращения к бэкенду с ИИ)
+        const botResponse = getBotResponse(userInput);
+
+        // Ответ ИИ
+        chatBox.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+
+        // Прокрутка чата вниз, чтобы видеть последние сообщения
+        chatBox.scrollTop = chatBox.scrollHeight;
+
+        // Очистка поля ввода
+        document.getElementById('userInput').value = '';
+      }
+    }
+
+    // Функция для имитации ответа ИИ (замените этот код на реальный запрос к бэкенду с ИИ)
+    function getBotResponse(userInput) {
+  // URL, куда будет отправляться запрос
+  const url = ''; // Замените на реальный URL вашего сервера с ИИ
+
+  // Данные для отправки на сервер, в данном случае, мы отправляем userInput
+  const data = { userInput };
+
+  // Настройки запроса
+  const fetchOptions = {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(data)
+  };
+
+  // Отправка запроса к серверу
+  fetch(url, fetchOptions)
+    .then(response => {
+      if (response.ok) {
+        // Если ответ успешный, возвращаем текст ответа от ИИ
+        return response.text();
+      }
+      throw new Error('Network response was not ok.');
+    })
+    .then(botResponse => {
+      // Обработка ответа от ИИ - в данном примере, выводим ответ в чат
+      const chatBox = document.getElementById('chatBox');
+      chatBox.innerHTML += `<div class="bot-message">${botResponse}</div>`;
+      chatBox.scrollTop = chatBox.scrollHeight;
+    })
+    .catch(error => {
+      // Обработка ошибок, если запрос к серверу не удался
+      console.error('There was a problem with the fetch operation:', error);
+      // Добавьте обработку ошибки в вашем интерфейсе чата, если необходимо
+    });
+
+  // Возвращаем строку, пока запрос не завершен
+  return 'Loading...';
+}
+
+  </script>
+</body>
+</html>
